@@ -7,7 +7,6 @@ import com.abc.Transaction;
 public class MaxiSavingsAccount extends Account implements Accountable{
 
 
-	protected List<Transaction> transactions;
 
     public MaxiSavingsAccount(int accountType) {
 		super(accountType);
@@ -16,8 +15,12 @@ public class MaxiSavingsAccount extends Account implements Accountable{
 
 	@Override
 	public double interestEarned() {
+		//Change Maxi-Savings accounts to have an interest rate of 5% assuming no withdrawals in the past 10 days otherwise 0.1%
+
 		double amount = sumTransactions();
 
+		
+		
         if (amount <= 1000)
             return amount * 0.02;
         if (amount <= 2000)

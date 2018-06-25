@@ -5,7 +5,6 @@ import java.util.List;
 import com.abc.Transaction;
 
 public class CheckingAccount extends Account implements Accountable{
-	protected List<Transaction> transactions;
 	
 	
     public CheckingAccount(int accountType) {
