@@ -3,22 +3,26 @@ package com.abc;
 import java.util.ArrayList;
 import java.util.List;
 
+ 
+import com.abc.accounts.AccountFactory;
+import com.abc.accounts.Accountable;
+
 import static java.lang.Math.abs;
 
 public class Customer {
     private String name;
-    private List<Account> accounts;
+    private List<Accountable> accounts;
 
     public Customer(String name) {
         this.name = name;
-        this.accounts = new ArrayList<Account>();
+        this.accounts = new ArrayList<Accountable>();
     }
 
     public String getName() {
         return name;
     }
 
-    public Customer openAccount(Account account) {
+    public Customer openAccount(Accountable account) {
         accounts.add(account);
         return this;
     }
@@ -29,7 +33,7 @@ public class Customer {
 
     public double totalInterestEarned() {
         double total = 0;
-        for (Account a : accounts)
+        for (Accountable a : accounts)
             total += a.interestEarned();
         return total;
     }
@@ -38,35 +42,46 @@ public class Customer {
         String statement = null;
         statement = "Statement for " + name + "\n";
         double total = 0.0;
-        for (Account a : accounts) {
+        for (Accountable a : accounts) {
             statement += "\n" + statementForAccount(a) + "\n";
-            total += a.sumTransactions();
+            total += a.getBalance();
         }
         statement += "\nTotal In All Accounts " + toDollars(total);
         return statement;
     }
+    
+    //Implement account transfer
+    public void transfer(Accountable from, Accountable to, double amount) {
+	    if (amount <= 0) {
+	        throw new IllegalArgumentException("amount must be greater than zero");
+	    }
+	    else {
+    		from.withdraw(amount);
+    		to.deposit(amount);
+    	}
+    }
 
-    private String statementForAccount(Account a) {
+    private String statementForAccount(Accountable a) {
         String s = "";
 
        //Translate to pretty account type
         switch(a.getAccountType()){
-            case Account.CHECKING:
+            case AccountFactory.CHECKING:
                 s += "Checking Account\n";
                 break;
-            case Account.SAVINGS:
+            case AccountFactory.SAVINGS:
                 s += "Savings Account\n";
                 break;
-            case Account.MAXI_SAVINGS:
+            case AccountFactory.MAXI_SAVINGS:
                 s += "Maxi Savings Account\n";
                 break;
         }
 
         //Now total up all the transactions
         double total = 0.0;
-        for (Transaction t : a.transactions) {
-            s += "  " + (t.amount < 0 ? "withdrawal" : "deposit") + " " + toDollars(t.amount) + "\n";
-            total += t.amount;
+        for (Transaction t : a.getTransactions()) {
+            s += "  " + (t.getAmount() < 0 ? "withdrawal" : "deposit") + " " + toDollars(t.getAmount()) + "\n";
+            total += t.getAmount();
         }
         s += "Total " + toDollars(total);
         return s;
@@ -75,4 +90,6 @@ public class Customer {
     private String toDollars(double d){
         return String.format("$%,.2f", abs(d));
     }
+    
+    
 }
