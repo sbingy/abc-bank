@@ -15,27 +15,30 @@ public class SavingsAccount extends Account  implements Accountable {
 	}
 
 	public double interestEarned() {
-		double amount = sumTransactions();
-        if (amount <= 1000)
-            return amount * 0.001;
-        else
-            return 1 + (amount-1000) * 0.002;
+		
+		double interest = 0.0;
+		double amount = 0.0;
+		Transaction last = null;
+		for (Transaction t: transactions) {
+			//is there a difference in days between last transaction?
+			 if(last !=null) {
+				 //calculate interest earned for days and add to interest
+				 if(amount <= 1000)
+					 interest += DailyInterestRateUtil.calculateInterest(last.getTransactionDate(), t.getTransactionDate(), amount, 0.001);		
+				 else {
+					 interest += (1 + DailyInterestRateUtil.calculateInterest(last.getTransactionDate(), t.getTransactionDate(), (amount-1000), 0.002));		
+				 }
+			 }			
+			amount += t.getAmount();   
+			last = t;
+		}
+		return interest;
 	}
+// //   return 1 + (amount-1000) * 0.002;
 
-}
-
-
-/*
-
-public double interestEarned() {
-double amount = sumTransactions();
-switch(accountType){
  
-    case MAXI_SAVINGS:
-
-    default:
 
 }
-}
 
-*/
+
+ 
