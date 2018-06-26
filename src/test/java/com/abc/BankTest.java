@@ -48,5 +48,25 @@ public class BankTest {
         assertEquals(3.0/365, bank.totalInterestPaid(), DOUBLE_DELTA);
         
     }
+    
+    @Test
+    public void transfer() {
+    	Bank bank = new Bank();
+    	Customer alice = new Customer("Alice");
+        Accountable checkingAccount = AccountFactory.getAccountType(AccountFactory.CHECKING);
+        Accountable savingsAccount = AccountFactory.getAccountType(AccountFactory.SAVINGS);
+    	alice.openAccount(checkingAccount);
+    	alice.openAccount(savingsAccount);
+     	bank.addCustomer(alice);
+    	
+     	checkingAccount.deposit(2000.00);
+     	savingsAccount.deposit(500);
+     	
+     	alice.transfer(checkingAccount, savingsAccount, 1000);
+     	assertEquals(1000,checkingAccount.sumTransactions(),DOUBLE_DELTA);
+     	assertEquals(1500,savingsAccount.sumTransactions(),DOUBLE_DELTA);
+    	
+    	
+    }
 
 }
