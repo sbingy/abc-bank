@@ -1,10 +1,8 @@
 package com.abc.utils;
 
-import java.util.List;
 import java.util.Calendar;
 import java.util.Date;
-import com.abc.Transaction;
-
+ 
 public class DailyInterestRateUtil {
 
 	private static double getMaxDays(Date date) {
@@ -12,6 +10,22 @@ public class DailyInterestRateUtil {
 		cal.setTime(date);
 		return cal.getActualMaximum(Calendar.DAY_OF_YEAR);
 		
+	}
+	
+	public static double calculateInterest(Date to, double sum, double annualInterest) {
+		if(annualInterest <= 0) {
+			throw new IllegalArgumentException("annual interest has to be greater than zero");
+		}
+		double dailyInterest = annualInterest / getMaxDays(to);
+		return dailyInterest * sum;
+	}
+	
+	public static double calculateInterest(Date to, double sum, double annualInterest, double offset) {
+		if(annualInterest <= 0) {
+			throw new IllegalArgumentException("annual interest has to be greater than zero");
+		}
+		double dailyInterest = annualInterest / getMaxDays(to);
+		return offset + (dailyInterest * sum);
 	}
 	
 	public static double calculateInterest(Date from, Date to, double sum, double annualInterest) {
@@ -28,7 +42,24 @@ public class DailyInterestRateUtil {
 		
 	}
 	
+	public static double calculateInterest(Date from, Date to, double sum, double annualInterest, double offset) {
+		double total = 0.0;
+		if(annualInterest <= 0) {
+			throw new IllegalArgumentException("annual interest has to be greater than zero");
+		}
+		double dailyInterest = annualInterest / getMaxDays(to);
+		long dateDiff = getNumberOfDaysDiff(from,to);
+		for(long i = 0; i < dateDiff; i++) {
+			total += (offset+ (dailyInterest * sum));
+		}
+		return total;
+		
+	}
+	
 
+	
+	
+ 
 	
 	public  static long getNumberOfDaysDiff(Date from, Date to) {
 		long dateDiff = Math.abs(to.getTime() - from.getTime());

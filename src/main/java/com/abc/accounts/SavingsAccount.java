@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import com.abc.DateProvider;
 import com.abc.Transaction;
 import com.abc.utils.DailyInterestRateUtil;
 
@@ -26,16 +27,24 @@ public class SavingsAccount extends Account  implements Accountable {
 				 if(amount <= 1000)
 					 interest += DailyInterestRateUtil.calculateInterest(last.getTransactionDate(), t.getTransactionDate(), amount, 0.001);		
 				 else {
-					 interest += (1 + DailyInterestRateUtil.calculateInterest(last.getTransactionDate(), t.getTransactionDate(), (amount-1000), 0.002));		
+					 interest += DailyInterestRateUtil.calculateInterest(last.getTransactionDate(), t.getTransactionDate(), (amount-1000), 0.002,1);		
 				 }
+				 amount += interest; 
 			 }			
 			amount += t.getAmount();   
 			last = t;
 		}
+		//calculate today's interest
+		 if(amount <= 1000) {
+			 interest += DailyInterestRateUtil.calculateInterest(DateProvider.getInstance().now(),amount,0.001);
+		 }else {
+			 interest += DailyInterestRateUtil.calculateInterest(DateProvider.getInstance().now(),amount,0.002,1);
+
+		 }		 
+
 		return interest;
 	}
-// //   return 1 + (amount-1000) * 0.002;
-
+ 
  
 
 }
