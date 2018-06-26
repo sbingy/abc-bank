@@ -16,16 +16,14 @@ public class DailyInterestRateUtil {
 		if(annualInterest <= 0) {
 			throw new IllegalArgumentException("annual interest has to be greater than zero");
 		}
-		double dailyInterest = annualInterest / getMaxDays(to);
-		return dailyInterest * sum;
+		return annualInterest * sum / getMaxDays(to);
 	}
 	
 	public static double calculateInterest(Date to, double sum, double annualInterest, double offset) {
 		if(annualInterest <= 0) {
 			throw new IllegalArgumentException("annual interest has to be greater than zero");
 		}
-		double dailyInterest = annualInterest / getMaxDays(to);
-		return offset + (dailyInterest * sum);
+ 		return offset + (annualInterest * sum / getMaxDays(to));
 	}
 	
 	public static double calculateInterest(Date from, Date to, double sum, double annualInterest) {
@@ -33,10 +31,9 @@ public class DailyInterestRateUtil {
 		if(annualInterest <= 0) {
 			throw new IllegalArgumentException("annual interest has to be greater than zero");
 		}
-		double dailyInterest = annualInterest / getMaxDays(to);
-		long dateDiff = getNumberOfDaysDiff(from,to);
+ 		long dateDiff = getNumberOfDaysDiff(from,to);
 		for(long i = 0; i < dateDiff; i++) {
-			total += (dailyInterest * sum);
+			total += (annualInterest * sum / getMaxDays(to));
 		}
 		return total;
 		
@@ -47,19 +44,13 @@ public class DailyInterestRateUtil {
 		if(annualInterest <= 0) {
 			throw new IllegalArgumentException("annual interest has to be greater than zero");
 		}
-		double dailyInterest = annualInterest / getMaxDays(to);
-		long dateDiff = getNumberOfDaysDiff(from,to);
+ 		long dateDiff = getNumberOfDaysDiff(from,to);
 		for(long i = 0; i < dateDiff; i++) {
-			total += (offset+ (dailyInterest * sum));
+			total += ((offset  + annualInterest * sum) / getMaxDays(to));
 		}
 		return total;
 		
 	}
-	
-
-	
-	
- 
 	
 	public  static long getNumberOfDaysDiff(Date from, Date to) {
 		long dateDiff = Math.abs(to.getTime() - from.getTime());
