@@ -6,6 +6,7 @@ import com.abc.Transaction;
 
 public interface Accountable {
     public List<Transaction> getTransactions();
+    public double sumTransactions();
     public void deposit(double amount);
 	public void withdraw(double amount);
 	public double getBalance();

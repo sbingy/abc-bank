@@ -1,8 +1,5 @@
 package com.abc.accounts;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+  
 
 import com.abc.DateProvider;
 import com.abc.Transaction;
@@ -38,7 +35,7 @@ public class SavingsAccount extends Account  implements Accountable {
 		 if(amount <= 1000) {
 			 interest += DailyInterestRateUtil.calculateInterest(DateProvider.getInstance().now(),amount,0.001);
 		 }else {
-			 interest += DailyInterestRateUtil.calculateInterest(DateProvider.getInstance().now(),amount,0.002,1);
+			 interest += DailyInterestRateUtil.calculateInterest(DateProvider.getInstance().now(),(amount-1000),0.002,1);
 
 		 }		 
 

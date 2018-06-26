@@ -34,7 +34,7 @@ public class CustomerTest {
                 "Total $3,800.00\n" +
                 "\n" +
                 "Total In All Accounts $3,900.00", henry.getStatement());
-    }
+     }
 
     @Test
     public void testOneAccount(){

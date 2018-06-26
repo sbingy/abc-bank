@@ -44,7 +44,7 @@ public class Customer {
         double total = 0.0;
         for (Accountable a : accounts) {
             statement += "\n" + statementForAccount(a) + "\n";
-            total += a.getBalance();
+            total += a.sumTransactions();
         }
         statement += "\nTotal In All Accounts " + toDollars(total);
         return statement;
@@ -89,6 +89,19 @@ public class Customer {
 
     private String toDollars(double d){
         return String.format("$%,.2f", abs(d));
+    }
+    
+    public static void main(String ...strings ) {
+
+        Accountable checkingAccount = AccountFactory.getAccountType(AccountFactory.CHECKING);
+        Accountable savingsAccount = AccountFactory.getAccountType(AccountFactory.SAVINGS);
+
+        Customer henry = new Customer("Henry").openAccount(checkingAccount).openAccount(savingsAccount);
+
+        checkingAccount.deposit(100.0);
+        savingsAccount.deposit(4000.0);
+        savingsAccount.withdraw(200.0);
+        System.out.println(henry.getStatement());
     }
     
     

@@ -23,7 +23,7 @@ public class DailyInterestRateUtil {
 		if(annualInterest <= 0) {
 			throw new IllegalArgumentException("annual interest has to be greater than zero");
 		}
- 		return offset + (annualInterest * sum / getMaxDays(to));
+ 		return (offset + annualInterest * sum) / getMaxDays(to);
 	}
 	
 	public static double calculateInterest(Date from, Date to, double sum, double annualInterest) {

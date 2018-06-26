@@ -39,7 +39,7 @@ public abstract class Account implements Accountable{
 		return sumTransactions() + interestEarned();
 	}
     
-    protected double sumTransactions() {
+    public double sumTransactions() {
         double amount = 0.0;
         for (Transaction t: transactions) {
          		amount += t.getAmount();        
